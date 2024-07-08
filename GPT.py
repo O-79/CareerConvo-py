@@ -19,15 +19,15 @@ class GPT:
             }
 
             ######### CONFIGURABLE #########
-            temperature = 0.1
-            top_p = 0.1
+            temperature = 0.7
+            top_p = 0.7
             ################################
             
             body = json.dumps({
                 "model": model,
                 "temperature": temperature,
                 "top_p": top_p,
-                "messages": [{"role": "user", "content": MSG}]
+                "messages": [{"role": "system", "content": "you are a career guidance counselor"}, {"role": "user", "content": MSG}]
             })
 
             response = requests.post(url, headers=headers, data=body)
