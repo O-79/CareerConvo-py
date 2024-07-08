@@ -4,16 +4,8 @@ from Manager import Manager
 import re
 
 class Control:
-    MENU = "\nWELCOME-TO-THE-CAREER-TREE------\n" \
-           + "USING:-gpt-turbo-3.5------------\n" \
-           + "--CMD-MENU----------------------\n" \
-           + "----\"(L)OC\"-:--LOC-CAR-JOB-COL--\n" \
-           + "--------RESETS-TREE-------------\n" \
-           + "----\"(C)AR\"-:--CAR-JOB-COL------\n" \
-           + "----\"(J)OB\"-:--JOB-COL----------\n" \
-           + "----\"(U)COL\":--COL--------------\n" \
-           + "----\"(Q)UIT\":--QUIT-------------\n\n"
-
+    MENU = ""
+    
     Q_SIZ = "* Size of responses ? (4 [Faster] - 16 [Slower])"
     
     Q_INS = "* In-state colleges only? (0 [No] / 1 [Yes])"
@@ -29,93 +21,6 @@ class Control:
     A_DEG = "* You will need the following degree: "
 
     A_PAY = "* Salary: "
-
-    @staticmethod
-    def PARSE(Q: str, TYP: str, X: int, MGR):
-        print(Q)
-        XYZ = ""
-        if TYP == "CAR":
-            XYZ = MGR.GET_CAR_GPT()
-        elif TYP == "JOB":
-            XYZ = MGR.GET_JOB_GPT()
-        elif TYP == "COL":
-            XYZ = MGR.GET_COL_GPT()
-        
-        XYZ = re.sub(r'[0-9]+', '', XYZ).replace(' .', '.').replace('. ', '.').replace('.', '').replace(' |', '|').replace('| ', '|').replace('\n', '|').replace('||', '|')
-        
-        X = XYZ.count('|') + 1
-
-        print(f"* Choose (1 - {X}):\n{XYZ}")
-        try:
-            SEL = int(input())
-        except ValueError:
-            SEL = 1
-
-        if SEL < 1:
-            SEL = 1
-        if SEL > X:
-            SEL = X
-        
-        XYZ_SEL = XYZ.split('|')[SEL - 1].strip()
-
-        if TYP == "CAR":
-            MGR.SET_CAR(XYZ_SEL)
-        elif TYP == "JOB":
-            MGR.SET_JOB(XYZ_SEL)
-        elif TYP == "COL":
-            MGR.SET_COL(XYZ_SEL)
-
-        if TYP == "JOB":
-            print(f"{Control.A_DEG}{MGR.GET_DEG_GPT()}\n{Control.A_PAY}{MGR.GET_PAY_GPT()}")
-
-        return XYZ_SEL
-
-    @staticmethod
-    def CMD_LOC(CAREER_TREE, X: int, MGR):
-        print(Control.Q_LOC, end='')
-        if MGR.GET_LOC() is not None:
-            print(" (resets tree)")
-        else:
-            print()
-
-        LOC_ADD = input()
-        MGR.SET_LOC(LOC_ADD)
-
-        CAR_ADD = Control.PARSE(Control.Q_CAR, "CAR", X, MGR)
-        JOB_ADD = Control.PARSE(Control.Q_JOB, "JOB", X, MGR)
-        COL_ADD = Control.PARSE(Control.Q_COL, "COL", X, MGR)
-
-        CAREER_TREE.ADD(0, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
-        CAREER_TREE.ADD(1, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
-        CAREER_TREE.ADD(2, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD)
-
-        return MGR.GET_COL_INF_GPT() if CAREER_TREE.ADD(3, LOC_ADD, CAR_ADD, JOB_ADD, COL_ADD) else None
-
-    @staticmethod
-    def CMD_CAR(CAREER_TREE, X: int, MGR):
-        CAR_ADD = Control.PARSE(Control.Q_CAR, "CAR", X, MGR)
-        JOB_ADD = Control.PARSE(Control.Q_JOB, "JOB", X, MGR)
-        COL_ADD = Control.PARSE(Control.Q_COL, "COL", X, MGR)
-
-        CAREER_TREE.ADD(1, MGR.GET_LOC(), CAR_ADD, JOB_ADD, COL_ADD)
-        CAREER_TREE.ADD(2, MGR.GET_LOC(), CAR_ADD, JOB_ADD, COL_ADD)
-
-        return MGR.GET_COL_INF_GPT() if CAREER_TREE.ADD(3, MGR.GET_LOC(), CAR_ADD, JOB_ADD, COL_ADD) else None
-
-    @staticmethod
-    def CMD_JOB(CAREER_TREE, X: int, MGR):
-        JOB_ADD = Control.PARSE(Control.Q_JOB, "JOB", X, MGR)
-        COL_ADD = Control.PARSE(Control.Q_COL, "COL", X, MGR)
-
-        CAREER_TREE.ADD(2, MGR.GET_LOC(), MGR.GET_CAR(), JOB_ADD, COL_ADD)
-
-        return MGR.GET_COL_INF_GPT() if CAREER_TREE.ADD(3, MGR.GET_LOC(), MGR.GET_CAR(), JOB_ADD, COL_ADD) else None
-
-    @staticmethod
-    def CMD_COL(CAREER_TREE, X: int, MGR):
-        COL_ADD = Control.PARSE(Control.Q_COL, "COL", X, MGR)
-
-        return MGR.GET_COL_INF_GPT() if CAREER_TREE.ADD(3, MGR.GET_LOC(), MGR.GET_CAR(), MGR.GET_JOB(), COL_ADD) else None
 
     @staticmethod
     def DSH(TXT: str) -> str:
