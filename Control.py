@@ -13,16 +13,6 @@ class Control:
 
     Q_LOC = "* Hi! What is your current / desired location?"
 
-    Q_CAR = "* Choose one of the following careers (add / select)"
-
-    Q_JOB = "* Choose one of the following jobs (add / select)"
-
-    Q_COL = "* Choose one of the following colleges (add / select)"
-
-    A_DEG = "* You will need the following degree: "
-
-    A_PAY = "* Salary: "
-
     @staticmethod
     def DSH(TXT: str) -> str:
         if len(TXT) > 32:
