@@ -2,10 +2,6 @@ import os
 from openai import OpenAI
 
 class GPT:
-    with open("key.txt", 'r') as f:
-        KEY = f.read().strip()
-        f.close()
-    
     @staticmethod
     def GET_ANS(MSG):
         OpenAI.api_key = os.getenv('OPENAI_API_KEY')
