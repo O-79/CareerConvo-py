@@ -3,4 +3,4 @@
 
 <h3>What Is It?</h3>
 
-A more conversational approach to my [Career Tree](https://github.com/O-79/CareerTree-py)
+A more conversational approach to my [Career Tree](https://github.com/O-79/CareerTree-py).
